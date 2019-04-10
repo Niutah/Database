@@ -1,0 +1,102 @@
+--10.1
+select imie, nazwisko, pensja, coalesce(dodatek,0), pensja+coalesce(dodatek,0) 
+as do_zap³aty from pracownik
+
+--10.2
+select imie, nazwisko, 1.5*pensja as nowa_pensja from pracownik
+
+--10.3
+select imie, nazwisko, 0.01*pensja+coalesce(dodatek, 0) 
+as procent_zarobki 
+from pracownik
+order by procent_zarobki
+
+--11.1
+select top 1 * from pracownik 
+order by data_zatr
+
+--11.2
+select top 4 * from pracownik 
+order by nazwisko, imie
+
+--11.3
+select top 1* from wypozyczenie 
+order by data_wyp desc
+
+--12.1
+select imie, nazwisko, data_zatr
+from pracownik
+where MONTH(data_zatr)=5
+order by nazwisko, imie 
+
+--12.2
+select imie, nazwisko, DATEDIFF(day, data_zatr, getdate()) 
+as ile_dni 
+from pracownik
+order by ile_dni desc
+
+--12.3
+select marka, typ,
+datediff(year, data_prod, getdate())
+as ile_lat
+from samochod
+
+--13.1
+select imie, nazwisko, LEFT(imie, 1) + '.' + LEFT(nazwisko, 1)+ '.' 
+as inicjaly
+from klient 
+order by inicjaly, nazwisko, imie
+
+--13.2
+select imie, nazwisko, 
+UPPER(LEFT(imie,1))+LOWER(RIGHT(imie, LEN(imie)-1)) imie2, 
+UPPER(LEFT(nazwisko,1))+LOWER(RIGHT(nazwisko, LEN(nazwisko)-1)) nazwisko2
+from klient
+
+--14.1
+update pracownik
+set dodatek=50
+where dodatek is NULL 
+select * from pracownik 
+
+--14.2
+update pracownik
+set imie='Jerzy', nazwisko='Nowak'
+where id_pracownik=10
+
+--14.3
+update pracownik
+set dodatek=dodatek+100
+where pensja<1500
+
+--15.1
+delete from klient
+where id_klient=17
+
+--15.2
+delete from wypozyczenie
+where id_klient=17
+
+--15.3
+delete from samochod
+where przebieg>60000
+
+--16.1
+insert into 
+klient(id_klient, imie, nazwisko, ulica, numer, 
+kod, miasto, telefon)
+values (121, 'Adam', 'Cichy', 'Korzenna', 12, 
+'00-950', 'Warszawa', '123-454-321')
+
+--16.2
+insert into samochod(id_samochod,marka,typ,
+data_prod,kolor,poj_silnika, przebieg)
+values(50,'skoda','octavia',
+'2012-01-09','srebrny',1896,5000)
+
+--16.3
+insert into pracownik(id_pracownik,imie,nazwisko,
+data_zatr,dzial,stanowisko,pensja,dodatek,
+id_miejsce,telefon)
+values(12, 'Alojzy','Mikos','2010-11-08','zaopatrzenie',
+'magazynier',3000,50,1,'501-501-501')
